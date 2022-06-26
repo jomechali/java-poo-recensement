@@ -3,6 +3,7 @@ package fr.diginamic.recensement;
 import java.util.Scanner;
 
 import fr.diginamic.recensement.entites.Recensement;
+import fr.diginamic.recensement.exceptions.EntreeUtilisateurException;
 import fr.diginamic.recensement.services.RechercheDepartementsPlusPeuplees;
 import fr.diginamic.recensement.services.RecherchePopulationBorneService;
 import fr.diginamic.recensement.services.RecherchePopulationDepartementService;
@@ -33,7 +34,7 @@ public class Application {
 		Recensement recensement = RecensementUtils.lire(filePath);
 
 		if (recensement == null) {
-			System.out.println("L'application doit s'arrétée en raison d'une erreur d'exécution.");
+			System.out.println("L'application doit s'arréter en raison d'une erreur d'exécution.");
 			System.exit(-1);
 		}
 
@@ -44,50 +45,57 @@ public class Application {
 			// Affichage du menu
 			afficherMenu();
 
-			// Poser une question à l'utilisateur
-			String choixMenu = scanner.nextLine();
+			try {
 
-			// Conversion du choix utilisateur en int
-			choix = Integer.parseInt(choixMenu);
+				// Poser une question à l'utilisateur
+				String choixMenu = scanner.nextLine();
 
-			// On exécute l'option correspondant au choix de l'utilisateur
-			switch (choix) {
-			case 1:
-				RecherchePopulationVilleService rechercheVille = new RecherchePopulationVilleService();
-				rechercheVille.traiter(recensement, scanner);
-				break;
-			case 2:
-				RecherchePopulationDepartementService rechercheDept = new RecherchePopulationDepartementService();
-				rechercheDept.traiter(recensement, scanner);
-				break;
-			case 3:
-				RecherchePopulationRegionService rechercheRegion = new RecherchePopulationRegionService();
-				rechercheRegion.traiter(recensement, scanner);
-				break;
-			case 4:
-				RecherchePopulationBorneService recherchePopBorne = new RecherchePopulationBorneService();
-				recherchePopBorne.traiter(recensement, scanner);
-				break;
-			case 5:
-				RechercheVillesPlusPeupleesDepartement rechercheVillesPlusPeupleesDepartement = new RechercheVillesPlusPeupleesDepartement();
-				rechercheVillesPlusPeupleesDepartement.traiter(recensement, scanner);
-				break;
-			case 6:
-				RechercheVillesPlusPeupleesRegion rechercheVillesPlusPeupleesRegion = new RechercheVillesPlusPeupleesRegion();
-				rechercheVillesPlusPeupleesRegion.traiter(recensement, scanner);
-				break;
-			case 7:
-				RechercheDepartementsPlusPeuplees rechercherDepartementsPlusPeuplees = new RechercheDepartementsPlusPeuplees();
-				rechercherDepartementsPlusPeuplees.traiter(recensement, scanner);
-				break;
-			case 8:
-				RechercheRegionsPlusPeuplees rechercheRegionsPlusPeuplees = new RechercheRegionsPlusPeuplees();
-				rechercheRegionsPlusPeuplees.traiter(recensement, scanner);
-				break;
-			case 9:
-				RechercheVillesPlusPeupleesFrance rechercheVillesPlusPeupleesFrance = new RechercheVillesPlusPeupleesFrance();
-				rechercheVillesPlusPeupleesFrance.traiter(recensement, scanner);
-				break;
+				// Conversion du choix utilisateur en int
+				choix = Integer.parseInt(choixMenu);
+
+				// On exécute l'option correspondant au choix de l'utilisateur
+				switch (choix) {
+				case 1:
+					RecherchePopulationVilleService rechercheVille = new RecherchePopulationVilleService();
+					rechercheVille.traiter(recensement, scanner);
+					break;
+				case 2:
+					RecherchePopulationDepartementService rechercheDept = new RecherchePopulationDepartementService();
+					rechercheDept.traiter(recensement, scanner);
+					break;
+				case 3:
+					RecherchePopulationRegionService rechercheRegion = new RecherchePopulationRegionService();
+					rechercheRegion.traiter(recensement, scanner);
+					break;
+				case 4:
+					RecherchePopulationBorneService recherchePopBorne = new RecherchePopulationBorneService();
+					recherchePopBorne.traiter(recensement, scanner);
+					break;
+				case 5:
+					RechercheVillesPlusPeupleesDepartement rechercheVillesPlusPeupleesDepartement = new RechercheVillesPlusPeupleesDepartement();
+					rechercheVillesPlusPeupleesDepartement.traiter(recensement, scanner);
+					break;
+				case 6:
+					RechercheVillesPlusPeupleesRegion rechercheVillesPlusPeupleesRegion = new RechercheVillesPlusPeupleesRegion();
+					rechercheVillesPlusPeupleesRegion.traiter(recensement, scanner);
+					break;
+				case 7:
+					RechercheDepartementsPlusPeuplees rechercherDepartementsPlusPeuplees = new RechercheDepartementsPlusPeuplees();
+					rechercherDepartementsPlusPeuplees.traiter(recensement, scanner);
+					break;
+				case 8:
+					RechercheRegionsPlusPeuplees rechercheRegionsPlusPeuplees = new RechercheRegionsPlusPeuplees();
+					rechercheRegionsPlusPeuplees.traiter(recensement, scanner);
+					break;
+				case 9:
+					RechercheVillesPlusPeupleesFrance rechercheVillesPlusPeupleesFrance = new RechercheVillesPlusPeupleesFrance();
+					rechercheVillesPlusPeupleesFrance.traiter(recensement, scanner);
+					break;
+				}
+			} catch (EntreeUtilisateurException e) {
+
+				System.err.println(e.getMessage());
+				
 			}
 
 		} while (choix != 99);

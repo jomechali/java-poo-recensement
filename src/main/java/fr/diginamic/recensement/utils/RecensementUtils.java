@@ -2,11 +2,13 @@ package fr.diginamic.recensement.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
 import fr.diginamic.recensement.entites.Recensement;
+import fr.diginamic.recensement.entites.Ville;
 
 /** Classe permettant de lire le contenu d'un fichier
  * @author DIGINAMIC
@@ -40,5 +42,43 @@ public class RecensementUtils {
 			return null;
 		}
 		
+	}
+
+	/**
+	 * Methode pour identifier si au moins une ville d une liste est dans un departement donne
+	 * Si aucune n est trouvee dans la liste globale, ce code n existe pas
+	 * 
+	 * @param codeDepartement le code du departement teste
+	 * @param villes la liste
+	 * @return
+	 */
+	public static boolean departementTrouve(String codeDepartement, List<Ville> villes) {
+		boolean trouve = false;
+		Iterator<Ville> iterator = villes.iterator();
+		while (iterator.hasNext() && !trouve) {
+			Ville ville = (Ville) iterator.next();
+			trouve = ville.getCodeDepartement().toLowerCase().startsWith(codeDepartement.toLowerCase());
+		}
+
+		return trouve;
+	}
+
+	/**
+	 * Methode pour identifier si au moins une ville d une liste est dans une region donnee
+	 * Si aucune n est trouvee dans la liste globale, ce code n existe pas
+	 * 
+	 * @param identifiantRegion le nom de la region ou le code de la region
+	 * @param villes la liste
+	 * @return
+	 */
+	public static boolean regionTrouvee(String identifiantRegion, List<Ville> villes) {
+		boolean trouve = false;
+		Iterator<Ville> iterator = villes.iterator();
+		while (iterator.hasNext() && !trouve) {
+			Ville ville = (Ville) iterator.next();
+			trouve = ville.getCodeRegion().toLowerCase().startsWith(identifiantRegion.toLowerCase()) || ville.getNomRegion().toLowerCase().startsWith(identifiantRegion.toLowerCase());
+		}
+
+		return trouve;
 	}
 }
